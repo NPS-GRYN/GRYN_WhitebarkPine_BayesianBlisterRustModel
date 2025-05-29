@@ -1,0 +1,30 @@
+The Bayesian hierarchical occupancy model is designed to estimate blister rust prevalence for whitebark pine throughout time. Unfortunately, when we incorporate data after 2023, the model *itself* does not know what to do with data after 2023!
+
+Somewhat fortunately, we are able to edit the model file to tell it what to do with these new years of data.
+
+This file describes the steps you must take in order to be successful!
+
+1. Duplicate the file "final_model1LMD.STAN"--this is entirely written by Wilson Wright, with updates by LMD to accomodate post-2020 data.
+2. Rename your duplicated file "final_model1[YOUR INITIALS].STAN" Be sure that it is a ".STAN" file.
+3. Open your copy of the file. [In Notepad or RStudio]
+4. Scroll to line 158 (line number is found at the bottom left corner if using Notepad). This line starts with "generated quantities"
+
+5. See lines 159-163, starting with "real prev_t1"? These indicate generated estimates for *prevalence* ["prev"] by *time period* ["t1", "t2", etc]. You will need to add a NEW line for time period 6! [or seven, if we're considering data after 2027!]
+6. Copy line 163 (beginning with "real prev_t5") and paste it immediately below itself, in line 164.
+7. RENAME "prev_t5" to "prev_t6". (For time period 6!)
+8. ALSO RENAME, "theta_year[4]" to "theta_year[5]" (Theta uses the previous time period, hence updating to "5" instead of "6"--IMPORTANT!)
+9. AND RENAME at the end of the line "mean_dbh[5]" to "mean_dbh[6]"
+10. LASTLY: add a colon (;) at the end of your new line
+
+11. For lines 165-187, starting with "real small_t1"/"real med_t1"/"real large_t1"/"real xlarge_t5", you will repeat the following steps:
+12. Copy the line of "real [small/med/large/xlarge]_t5" and paste it right below itself
+13. RENAME "[small/med/large/xlarge]_t5" to "t6" (For time period 6!)
+14. ALSO RENAME, "theta_year[4]" to "theta_year[5]" (Theta uses the previous time period, hence updating to "5" instead of "6"--IMPORTANT!)
+15. LASTLY: add a colon (;) at the end of your new line
+16. Repeat these steps for each group of small/med/large/xlarge
+
+17. FINALLY: Ensure the file ends with a fancy bracket ("}")
+
+Save and exit this file.
+
+Parting note: When you are in "/scripts/bayesian_blisterrust.R", edit the code line where you "import"/specify the model to swap my initials (LMD) in the filename with your initials, so the filename matches your updated version of the model "final_model1[YOUR INITIALS].STAN"
